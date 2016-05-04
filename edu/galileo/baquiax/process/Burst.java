@@ -1,4 +1,5 @@
 package edu.galileo.baquiax.process;
+package edu.galileo.baquiax.Machine;
 
 public class Burst {
     public static enum BurstType {
@@ -25,8 +26,9 @@ public class Burst {
         return this.requiredTime - this.timeWorked;
     }
     
-    public int reduceTime(int timeWorked) {         
-        this.timeWorked += timeWorked;
+    public int reduceTime(int timeToWork) {
+        Thread.sleep(Machine.TICK_TIME * timeToWork);
+        this.timeWorked += timeToWork;
         return (this.requiredTime - this.timeWorked);
     }
 }

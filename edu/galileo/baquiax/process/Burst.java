@@ -5,24 +5,28 @@ public class Burst {
         CPU, IO;
     }     
     private BurstType type;
-    private int time;
+    private int requiredTime;
     private int timeWorked;     
     
     public Process(BurstType t, int time) {
         this.type = t;
-        this.time = time;
+        this.requiredTime = time;
     }
     
     public BurstType getType() {
         return this.type;
     }
     
-    public int getTime() {
-        return this.time;
+    public int getRequiredTime() {
+        return this.requiredTime;
+    }
+    
+    public int getReminderTime() {
+        return this.requiredTime - this.timeWorked;
     }
     
     public int reduceTime(int timeWorked) {         
         this.timeWorked += timeWorked;
-        return (this.time - this.timeWorked);
+        return (this.requiredTime - this.timeWorked);
     }
 }

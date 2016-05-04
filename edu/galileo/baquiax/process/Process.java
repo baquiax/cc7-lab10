@@ -1,23 +1,34 @@
 package edu.galileo.baquiax.process;
 import java.util.LinkedList;
 
-public class Process {
-    private String name;
+public class Process extends AnyProcess {            
+    private String name;    
     private LinkedList<Burst> chunksProcess;
+    private int currentIndex;
+    private int totalRequiredTime;
     
     public Process(String n, LinkedList<Process> c) {
         this.name = n;
-        this.chunksProcess = c;           
+        this.chunksProcess = c; 
+        this.status = ProcessStatus.READY;
+        for (Burst b : this.chunksProcess) {
+            this.totalRequiredTime += b.getRequiredTime();
+        }         
     }
     
-    public void workInBurst(int time) {
-        Burst b = this.chunksProcess.peek();
-        if (b.reduceTime(time) == 0) {
-            this.chunksProcess.pop();
+    private void workInProcess(int time) {                
+        while (time > 0) {
+            Burst b = this.chunksProcess.get(this.currentIndex);
+            int timeToWork = (time > b.requiredTime()) ? b.requiredTime() : time;                        
+            if (b.reduceTime(timeToWork) == 0) {
+                this.currentIndex++;
+            }
+            time -= timeToWork;
         }
     }
     
-    public LinkedList<Burst> getBursts() {
+    private LinkedList<Burst> getBursts() {
         return this.chunksProcess;
     }
+            
 }
